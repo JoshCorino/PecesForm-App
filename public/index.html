@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)https://mdbootstrap.com/snippets/jquery/temp/2206716?action=prism_export -->
+<html>
+
+<head>
+  <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!--<base target="_parent">
+  <base href="." target="_parent"> -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=0.5">
+  <title>Formulario mortandad</title>
+  <link rel="stylesheet" type="text/css" href="/styles/inline.css">
+
+  <!-- Map Leaflet-->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
+
+  <!-- Font Icon -->
+  <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+  <link rel="stylesheet" href="vendor/nouislider/nouislider.min.css">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+  <!-- Main css -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- <link rel="stylesheet" type="text/css" href="./mdb-plugins-gathered.min.css"> -->
+
+  <style type="text/css">
+    /* Chart.js */
+    @-webkit-keyframes chartjs-render-animation {
+      from {
+        opacity: 0.99
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    @keyframes chartjs-render-animation {
+      from {
+        opacity: 0.99
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    .chartjs-render-monitor {
+      -webkit-animation: chartjs-render-animation 0.001s;
+      animation: chartjs-render-animation 0.001s;
+    }
+
+    .container-bg {
+      background: #fff;
+      margin: auto;
+      /* overflow-y: scroll; */
+      /* width: auto;
+      height: auto;   */
+      width: 100%;
+      height: 100%;
+
+    }
+
+    .header {
+      height: auto;
+      padding-bottom: 20px;
+    }
+
+    .container {
+
+      width: 100%;
+      /* height: auto; */
+      height: 100%;
+    }
+
+    .content {
+      height: auto;
+    }    
+
+
+    .fieldset {
+      height: auto;
+    }
+
+    body {
+      background: #fff !important;
+    }
+
+    #map { position: relative; top: 0px; margin-bottom: 50px; margin-right: 30px; width: 400px; height: 300px;}  
+
+
+  </style>
+  <!-- Link rel manifest -->
+  <link rel="manifest" href="/manifest.json">
+  <!-- iOS meta tags and icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Mortandad De Peces">
+  <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png">
+  <!-- Description-->
+  <meta name="description" content="Un simple aplicación meteorológica">
+  <!-- Meta theme-color -->
+  <meta name="theme-color" content="#0BA5EE" />
+</head>
+
+<body aria-busy="true">
+
+  <header class="header">
+    <h1>
+      Formulario II - Mortandad de peces en cultivo
+    </h1>
+    <button id="butInstall" aria-label="Install"></button>
+  </header>
+
+
+  <div class="container-bg">
+
+    <form method="POST" id="signup-form" action="#">
+      <div>
+
+        <h3>Informacion Personal</h3>
+        <fieldset>
+          <h4 class="steps-mobile">Paso 1/10:</h4>
+          <h2>Informacion Personal</h2>
+          <p class="desc">Por favor ingrese su informacion y avance al paso 2</p>
+          <div class="fieldset-content">
+            <div class="form-row">
+              <label class="form-label">Nombre y apellido</label>
+
+              <div class="form-group">
+                <input type="text" name="nombre" id="nombre" />
+                <span class="text-input">Nombre/s</span>
+              </div>
+              <div class="form-group">
+                <input type="text" name="apellido" id="apellido" />
+                <span class="text-input">Apellido/s</span>
+              </div>
+
+            </div>
+            <div class="form-group">
+              <label for="direccion" class="form-label">Direccion</label>
+              <input type="text" name="direccion" id="direccion" />
+            </div>
+            <div class="form-group">
+              <label for="telefono" class="form-label">Telefono</label>
+              <input type="text" name="telefono" id="telefono" />
+              <span class="text-input">Ejemplo :<span> 2494584738</span></span>
+            </div>
+            <div class="form-group">
+              <label for="empresa" class="form-label">Empresa</label>
+              <input type="text" name="empresa" id="empresa" />
+            </div>
+            <div class="form-group">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" name="email" id="email" />
+              <span class="text-input">Ejemplo :<span> Juan@gmail.com</span></span>
+            </div>
+          </div>
+        </fieldset>
+
+        <h3>Datos del evento</h3>
+        <fieldset>
+          <h4 class="steps-mobile">Paso 2/10:</h4>
+          <h2>Datos del evento</h2>
+          <p class="desc">Ingrese los datos del evento en cuestion</p>
+          <div class="fieldset-content">
+            <div class="form-group ">
+              <label class="form-label">Fecha</label>
+              <div class="col-10">
+                <input class="form-control" type="date" value="2011-08-19" id="fechaEvento">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lugar" class="form-label">Lugar del evento</label>
+              <input type="text" name="lugar" id="lugar" />
+            </div>
+
+            <div class="form-row">
+              <label class="form-label">Coordenadas</label>
+
+              <div id='map'></div>
+              <div class="form-flex">
+                <div class="form-group">
+
+                  <label for="longitud" class="form-label">Longitud</label>
+                  <input type="text" name="Longitud" id="longitud" />
+                  <label for="latitud" class="form-label">Latitud</label>
+                  <input type="text" name="Latitud" id="latitud" />
+                </div>
+              </div>
+              
+
+            </div>
+            
+
+          </div>
+
+
+        </fieldset>
+
+        <h3>Datos generales</h3>
+        <fieldset>
+          <h4 class="steps-mobile">Paso 3/10:</h4>
+          <h2>Datos generales</h2>
+          <p class="desc">Ingrese los datos generales del fenomeno de mortandad</p>
+          <div class="fieldset-content">
+            <div class="form-group">
+              <label for="especiec" class="form-label">Especie/es cultivada/s</label>
+              <input type="text" name="especiec" id="especiec" />
+            </div>
+            <div class="form-group">
+              <label for="especiea" class="form-label">Especie/es afectada/s</label>
+              <input type="text" name="especiea" id="especiea" />
+            </div>
+            <div class="form-group">
+              <label for="fotos" class="form-label">Fotos</label>
+              <select class="browser-default custom-select mb-4" id="fotos">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Individuales</option>
+                <option value="2">Panoramicas</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="estadoCrec" class="form-label">Estado de crecimiento de los peces afectados</label>
+              <select class="browser-default custom-select mb-4" id="estadoCrec">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Alevinos</option>
+                <option value="2">Larvas</option>
+                <option value="3">Juveniles</option>
+                <option value="4">Reproductores</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="numeroPeces" class="form-label">Numero de peces</label>
+              <select class="browser-default custom-select mb-4" id="numeroPeces">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Cientos</option>
+                <option value="2">Miles</option>
+              </select>
+              <input type="text" name="numeroPeces" id="numeroPeces" />
+              <span class="text-input">¿Cuantos?</span>
+            </div>
+            <div class="form-row">
+              <label class="form-label">Porcentaje de mortandad</label>
+              <div class="form-flex">
+                <div class="form-group">
+                  <input type="text" name="mortandadD" id="mortandadD" />
+                  <span class="text-input">% Mortandad diaria</span>
+                </div>
+                <div class="form-group">
+                  <input type="text" name="mortandadA" id="mortandadA" />
+                  <span class="text-input">% Mortandad acumulada</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="pecesenf" class="form-label">Peces enfermos</label>
+              <input type="text" name="pecesenf" id="pecesenf" />
+              <span class="text-input">Porcentaje</span>
+            </div>
+            <div class="form-group">
+              <label for="duracionFenomeno" class="form-label">Duracion del fenomeno</label>
+              <input type="text" name="duracionFenomeno" id="duracionFenomeno" />
+            </div>
+            <div class="form-group">
+              <label for="numeroPecesDesdeInicio" class="form-label">El número de peces afectados desde el inicio del
+                fenómeno</label>
+              <select class="browser-default custom-select mb-4" id="numeroPecesDesdeInicio">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Aumentó</option>
+                <option value="2">Disminuyó</option>
+                <option value="3">Se mantuvo constante</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="estadoHallado" class="form-label">Estado Hallado</label>
+              <select class="browser-default custom-select mb-4" id="estadoHallado">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Moribundos</option>
+                <option value="2">Muertos</option>
+                <option value="3">Frescos</option>
+                <option value="4">Descompuestos</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="tipoMortandad" class="form-label">Tipo de mortandad</label>
+              <select class="browser-default custom-select mb-4" id="tipoMortandad">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Progresiva</option>
+                <option value="2">Subita</option>
+              </select>
+            </div>
+
+          </div>
+        </fieldset>
+
+        <h3>Lesiones en la piel</h3>
+        <fieldset>
+          <h4 class="steps-mobile">Paso 4/10:</h4>
+          <h2>Lesiones en la piel</h2>
+          <p class="desc">Ingrese los datos de los peces afectados - Lesiones en la piel</p>
+          <div class="fieldset-content">
+            <div class="form-group">
+              <label for="erosiones" class="form-label">Erosiones</label>
+              <select class="browser-default custom-select mb-4" id="erosiones">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Focal</option>
+                <option value="2">Multifocal</option>
+                <option value="3">Difusa</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="despigmentacion" class="form-label">Despigmentacion</label>
+              <select class="browser-default custom-select mb-4" id="despigmentacion">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Focal</option>
+                <option value="2">Multifocal</option>
+                <option value="3">Difusa</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="hiperpigmentacion" class="form-label">Hiperpigmentacion</label>
+              <select class="browser-default custom-select mb-4" id="hiperpigmentacion">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Focal</option>
+                <option value="2">Multifocal</option>
+                <option value="3">Difusa</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="perdidaEscamas" class="form-label">Perdida de escamas</label>
+              <select class="browser-default custom-select mb-4" id="perdidaEscamas">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Focal</option>
+                <option value="2">Multifocal</option>
+                <option value="3">Difusa</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="ulcerasPiel" class="form-label">Úlceras</label>
+              <select class="browser-default custom-select mb-4" id="ulcerasPiel">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Superficiales</option>
+                <option value="2">Profundas</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="hemorragiasPiel" class="form-label">Hemorragias</label>
+              <select class="browser-default custom-select mb-4" id="hemorragiasPiel">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Petiquias</option>
+                <option value="2">Equimosis</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="presenciaNodulosPiel" class="form-label">Presencia de nódulos</label>
+              <select class="browser-default custom-select mb-4" id="presenciaNodulosPiel">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Focal</option>
+                <option value="2">Multifocal</option>
+                <option value="3">Difusa</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="presenciaMasasAlgodonosasPiel" class="form-label">Presencia de masas algodonosas</label>
+              <select class="browser-default custom-select mb-4" id="presenciaMasasAlgodonosasPiel">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="presenciaParasitosPiel" class="form-label">Presencia de parásitos </label>
+              <select class="browser-default custom-select mb-4" id="presenciaParasitosPiel">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="necrosisDeshilachAletas" class="form-label">Necrosis/deshilachamiento de aletas</label>
+              <select class="browser-default custom-select mb-4" id="necrosisDeshilachAletas">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="aumentoMucosidadPiel" class="form-label">Aumento de la mucosidad superficial</label>
+              <select class="browser-default custom-select mb-4" id="aumentoMucosidad">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <h3>Lesiones en branquias</h3>
+        <fieldset>
+          <h4 class="steps-mobile">Paso 5/10:</h4>
+          <h2>Lesiones en branquias</h2>
+          <p class="desc">Ingrese los datos de los peces afectados - Lesiones en branquias</p>
+          <div class="fieldset-content">
+            <div class="form-group">
+              <label for="aumentoMucosidadBranquias" class="form-label">Aumento de la mucosidad superficial</label>
+              <select class="browser-default custom-select mb-4" id="aumentoMucosidadBranquias">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="branquiasPalidas" class="form-label">Branquias pálidas (anemia)</label>
+              <select class="browser-default custom-select mb-4" id="branquiasPalidas">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="branquiasOscuras" class="form-label">Branquias oscuras</label>
+              <select class="browser-default custom-select mb-4" id="branquiasOscuras">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="necrosisDeshilachBranquias" class="form-label">Necrosis/Deshilachamiento</label>
+              <select class="browser-default custom-select mb-4" id="necrosisDeshilachBranquias">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="hemorragiasBranquias" class="form-label">Hemorragias</label>
+              <select class="browser-default custom-select mb-4" id="hemorragiasBranquias">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Petequias</option>
+                <option value="2">Equimosis</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="presenciaMasasAlgodonosasBranquias" class="form-label">Presencia de masas algodonosas</label>
+              <select class="browser-default custom-select mb-4" id="presenciaMasasAlgodonosasBranquias">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="presenciaParasitosBranquias" class="form-label">Presencia de parásitos</label>
+              <select class="browser-default custom-select mb-4" id="presenciaParasitosBranquias">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <h3>Lesiones en ojos</h3>
+        <fieldset>
+          <h4 class="steps-mobile">Paso 6/10:</h4>
+          <h2>Lesiones en ojos</h2>
+          <p class="desc">Ingrese los datos de los peces afectados - Lesiones en ojos</p>
+          <div class="fieldset-content">
+            <div class="form-group">
+              <label for="exoftalmia" class="form-label">Exoftalmia</label>
+              <select class="browser-default custom-select mb-4" id="exoftalmia">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="microftalmia" class="form-label">Microftalmia</label>
+              <select class="browser-default custom-select mb-4" id="microftalmia">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="opacidadCorneal" class="form-label">Opacidad corneal</label>
+              <select class="browser-default custom-select mb-4" id="opacidadCorneal">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="ulcerasOjos" class="form-label">Úlceras</label>
+              <select class="browser-default custom-select mb-4" id="ulcerasOjos">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Superficiales</option>
+                <option value="2">Profundas</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="hemorragiasOjos" class="form-label">Hemorragias</label>
+              <select class="browser-default custom-select mb-4" id="hemorragiasOjos">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Petequias</option>
+                <option value="2">Equimosis</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="presenciaNodulosOjos" class="form-label">Presencia de nódulos</label>
+              <select class="browser-default custom-select mb-4" id="presenciaNodulosOjos">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="presenciaMasasAlgodonosasOjos" class="form-label">Presencia de masas algodonosas</label>
+              <select class="browser-default custom-select mb-4" id="presenciaMasasAlgodonosasOjos">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="presenciaParasitosOjos" class="form-label">Presencia de parásitos </label>
+              <select class="browser-default custom-select mb-4" id="presenciaParasitosOjos">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <h3>Lesiones internas</h3>
+        <fieldset>
+          <h4 class="steps-mobile">Paso 7/10:</h4>
+          <h2>Lesiones internas</h2>
+          <p class="desc">Ingrese los datos de los peces afectados - Lesiones internas</p>
+          <div class="fieldset-content">
+            <div class="form-group">
+              <label for="congestion" class="form-label">Congestión</label>
+              <select class="browser-default custom-select mb-4" id="congestion">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+              <input type="text" name="organoCongestion" id="organo" />
+              <span class="text-input">Órgano (si selecciono si)</span>
+            </div>
+            <div class="form-group">
+              <label for="hemorragiasInternas" class="form-label">Hemorragias</label>
+              <select class="browser-default custom-select mb-4" id="hemorragiasInternas">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Focal</option>
+                <option value="2">Multifocal</option>
+                <option value="3">Difusa</option>
+              </select>
+              <input type="text" name="organoHemorragias" id="organoHemorragias" />
+              <span class="text-input">Órgano (si selecciono si)</span>
+            </div>
+            <div class="form-group">
+              <label for="grandulomasInternos" class="form-label">Grandulomas</label>
+              <select class="browser-default custom-select mb-4" id="grandulomasInternos">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Focal</option>
+                <option value="2">Multifocal</option>
+                <option value="3">Difusa</option>
+              </select>
+              <input type="text" name="organoGrandulomas" id="organoGrandulomas" />
+              <span class="text-input">Órgano (si corresponde)</span>
+            </div>
+            <div class="form-group">
+              <label for="presenciaNodulosInternos" class="form-label">Presencia de nódulos</label>
+              <select class="browser-default custom-select mb-4" id="presenciaNodulosInternos">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+              <input type="text" name="organoNodulos" id="organoNodulos" />
+              <span class="text-input">Órgano (si selecciono si)</span>
+            </div>
+            <div class="form-group">
+              <label for="necrosisInterna" class="form-label">Necrosis</label>
+              <select class="browser-default custom-select mb-4" id="necrosisInterna">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Focal</option>
+                <option value="2">Multifocal</option>
+                <option value="3">Difusa</option>
+              </select>
+              <input type="text" name="organoNecrosis" id="organoNecrosis" />
+              <span class="text-input">Órgano (si corresponde)</span>
+            </div>
+            <div class="form-group">
+              <label for="presenciaParasitosInternos" class="form-label">Presencia de parasitos</label>
+              <select class="browser-default custom-select mb-4" id="presenciaParasitosInternos">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+              <input type="text" name="organoParasitos" id="organoParasitos" />
+              <span class="text-input">Órgano (si selecciono si)</span>
+            </div>
+            <div class="form-group">
+              <label for="distencionAbdominal" class="form-label">Distención abdominal</label>
+              <select class="browser-default custom-select mb-4" id="distencionAbdominal">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+              <input type="text" name="organoDistencion" id="organoDistencion" />
+              <span class="text-input">Órgano (si selecciono si)</span>
+            </div>
+            <div class="form-group">
+              <label for="adherencias" class="form-label">Adherencias</label>
+              <select class="browser-default custom-select mb-4" id="adherencias">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+              <input type="text" name="organoAdherencias" id="organoAdherencias" />
+              <span class="text-input">Órgano (si selecciono si)</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <h3>Cuerpo de agua</h3>
+        <fieldset>
+          <h4 class="steps-mobile">Paso 8/10:</h4>
+          <h2>Cuerpo de agua</h2>
+          <p class="desc">Ingrese los datos referentes al cuerpo de agua donde ocurrió el fenómeno de mortandad</p>
+          <div class="form-group">
+            <label for="tipoUnidad" class="form-label">Tipo de Unidad de Cultivo en la que se produjo el brote</label>
+            <select class="browser-default custom-select mb-4" id="tipoUnidad">
+              <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+              <option value="1">Hatchery</option>
+              <option value="2">Estanques excavados</option>
+              <option value="3">Jaulas</option>
+              <option value="4">Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="superficieUnidad" class="form-label">Superficie de la unidad de cultivo</label>
+            <input type="text" name="duracionFenomeno" id="superficieUnidad" />
+          </div>
+          <div class="form-group">
+            <label for="profundidadUnidad" class="form-label">Profundidad de la unidad de cultivo</label>
+            <input type="text" name="duracionFenomeno" id="profundidadUnidad" />
+          </div>
+          <div class="form-group">
+            <label for="tipoFondo" class="form-label">Tipo de fondo</label>
+            <input type="text" name="duracionFenomeno" id="tipoFondo" />
+          </div>
+          <div class="form-group">
+            <label for="suministroAgua" class="form-label">Suministro de agua </label>
+            <select class="browser-default custom-select mb-4" id="suministroAgua">
+              <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+              <option value="1">Napa freática</option>
+              <option value="2">Ambientes naturales</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cambioCaracteristicas" class="form-label">¿Notó algún cambio en las características del
+              agua?</label>
+            <select class="browser-default custom-select mb-4" id="cambioCaracteristicasCheck">
+              <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+              <option value="1">Si</option>
+              <option value="2">No</option>
+            </select>
+            <input type="text" name="cambioCaracteristicasCuales" id="cambioCaracteristicasCuales" />
+            <span class="text-input">¿Cuáles?</span>
+          </div>
+          <div class="form-group">
+            <label for="variablesFisicoquimicas" class="form-label">¿Realiza un registro de variables fisicoquímicas del
+              agua?</label>
+            <select class="browser-default custom-select mb-4" id="variablesFisicoquimicasCheck">
+              <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+              <option value="1">Si</option>
+              <option value="2">No</option>
+            </select>
+            <input type="text" name="variablesFisicoquimicasCuales" id="variablesFisicoquimicasCuales" />
+            <span class="text-input">¿Cuáles? (Turbidez; Temperatura; Oxígeno disuelto; pH; Amoníaco; Nitratos;
+              Nitritos; Salinidad), adjunte las datos registrados</span>
+          </div>
+          <div class="form-group">
+            <label for="problemaObservado" class="form-label">Problema observado</label>
+            <select class="browser-default custom-select mb-4" id="problemaObservado">
+              <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+              <option value="1">Mortandad</option>
+              <option value="2">Lesiones superficiales</option>
+              <option value="3">Crecimiento lento</option>
+              <option value="4">Malformaciones</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="desdeCuando" class="form-label">¿Desde cuándo observa el problema?</label>
+            <input type="text" name="duracionFenomeno" id="desdeCuando" />
+          </div>
+          <div class="form-group">
+            <label for="modificacionesRutina" class="form-label">¿Han existido modificaciones en la rutina del
+              lote?</label>
+            <select class="browser-default custom-select mb-4" id="modificacionesRutinaCheck">
+              <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+              <option value="1">Si</option>
+              <option value="2">No</option>
+            </select>
+            <input type="text" name="modificacionesRutinaCuales" id="modificacionesRutinaCuales" />
+            <span class="text-input">¿Cuáles?</span>
+          </div>
+          <div class="form-group">
+            <label for="comen" class="form-label">¿Los peces afectados comen?</label>
+            <select class="browser-default custom-select mb-4" id="comenCheck1">
+              <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+              <option value="1">Si</option>
+              <option value="2">No</option>
+            </select>
+            <select class="browser-default custom-select mb-4" id="comenCheck2">
+              <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+              <option value="1">Normalmente</option>
+              <option value="2">Poco</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="comoNadan" class="form-label">¿Cómo nadan los peces afectados? </label>
+            <select class="browser-default custom-select mb-4" id="comoNadan">
+              <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+              <option value="1">Normalmente</option>
+              <option value="2">Erráticamente</option>
+              <option value="3">En círculos</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="alteracionesComportamiento" class="form-label">¿Observa alteraciones en el comportamiento?
+            </label>
+            <select class="browser-default custom-select mb-4" id="alteracionesComportamientoCheck">
+              <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+              <option value="1">Si</option>
+              <option value="2">No</option>
+            </select>
+            <input type="text" name="alteracionesComportamientoCuales" id="alteracionesComportamientoCuales" />
+            <span class="text-input">¿Cuáles?</span>
+          </div>
+          <div class="form-group">
+            <label for="respiracion" class="form-label">¿Observa alteraciones en la respiración? </label>
+            <select class="browser-default custom-select mb-4" id="respiracionCheck1">
+              <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+              <option value="1">Si</option>
+              <option value="2">No</option>
+            </select>
+            <select class="browser-default custom-select mb-4" id="respiracionCheck2">
+              <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+              <option value="1">Más lenta</option>
+              <option value="2">Más rápida</option>
+            </select>
+            <span class="text-input">Si observa alteraciones</span>
+          </div>
+        </fieldset>
+
+        <h3>Tratamiento en cultivo</h3>
+        <fieldset>
+          <h4 class="steps-mobile">Paso 9/10:</h4>
+          <h2>Tratamiento en cultivo</h2>
+          <p class="desc"> En caso de haber realizado algún tratamiento en cultivo, completar estos datos</p>
+          <div class="fieldset-content">
+            <div class="fieldset-content">
+              <div class="form-group">
+                <label for="tratamientosEnAgua" class="form-label">Tratamientos en el agua</label>
+                <select class="browser-default custom-select mb-4" id="tratamientosEnAgua">
+                  <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                  <option value="1">Si</option>
+                  <option value="2">No</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Químico o droga</label>
+                <input type="text" name="quimico" id="quimico" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Dosis/concentración</label>
+                <input type="text" name="dosis" id="dosis" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Días de tratamiento</label>
+                <input type="text" name="diasTratamiento" id="diasTratamiento" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Frecuencia</label>
+                <input type="text" name="frecuencia" id="frecuencia" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Ultimo tratamiento</label>
+                <input type="text" name="ultimoTratamiento" id="ultimoTratamiento" />
+              </div>
+              <div class="form-group row">
+                <label class="form-label">Fecha</label>
+                <div class="col-10">
+                  <input class="form-control" type="date" value="2011-08-19" id="fechaTratamiento">
+                </div>
+              </div>
+            </div>
+        </fieldset>
+
+        <h3> Datos climáticos de los días previos</h3>
+        <fieldset>
+          <h4 class="steps-mobile">Paso 10/10:</h4>
+          <h2> Datos climáticos de los días previos</h2>
+          <p class="desc"> Ingrese los datos referentes a los datos climáticos de los días previos</p>
+          <div class="fieldset-content">
+            <div class="form-group">
+              <label for="vientos" class="form-label">Vientos</label>
+              <select class="browser-default custom-select mb-4" id="vientos">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="intensidadVientos" class="form-label">Intensidad</label>
+              <input type="text" name="intensidadVientos" id="intensidadVientos" />
+              <span class="text-input"></span>
+              <select class="browser-default custom-select mb-4" id="intensidadVientoCheck">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Variable</option>
+                <option value="2">Constante</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="direccionVientos" class="form-label">Direccion</label>
+              <input type="text" name="direccionVientos" id="direccionVientos" />
+              <span class="text-input"></span>
+              <select class="browser-default custom-select mb-4" id="direccionVientoCheck">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Variable</option>
+                <option value="2">Constante</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Velocidad Km/h</label>
+              <input type="text" name="velocidadViento" id="velocidadViento" />
+            </div>
+            <div class="form-group">
+              <label for="lluvias" class="form-label">Lluvias</label>
+              <select class="browser-default custom-select mb-4" id="lluvias">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="intensidadLluvias" class="form-label">Intensidad</label>
+              <select class="browser-default custom-select mb-4" id="intensidadLluvias">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Copiosa</option>
+                <option value="2">Suave</option>
+                <option value="3">Intermitente</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cantidad de mm </label>
+              <input type="text" name="mmLluvia" id="mmLluvia" />
+            </div>
+            <div class="form-group">
+              <label for="tormentaElectrica" class="form-label">Tormenta eléctrica</label>
+              <select class="browser-default custom-select mb-4" id="tormentaElectrica">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label class="form-label">Temperaturas</label>
+              <div class="form-flex">
+                <div class="form-group">
+                  <input type="text" name="tempMinima" id="tempMinima" />
+                  <span class="text-input">Minima</span>
+                </div>
+                <div class="form-group">
+                  <input type="text" name="tempMaxima" id="tempMaxima" />
+                  <span class="text-input">Maxima</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="variacionesBruscas" class="form-label">Variaciones bruscas </label>
+              <select class="browser-default custom-select mb-4" id="variacionesBruscas">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Si</option>
+                <option value="2">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Variaciones en ºC</label>
+              <input type="text" name="variacionTemp" id="variacionTemp" />
+            </div>
+            <div class="form-group">
+              <label for="nubosidad" class="form-label">Nubosidad</label>
+              <select class="browser-default custom-select mb-4" id="nubosidad">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Nublado</option>
+                <option value="2">Variable</option>
+                <option value="2">Despejado</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="presionAtmosferica" class="form-label">Presión atmosférica </label>
+              <select class="browser-default custom-select mb-4" id="presionAtmosferica">
+                <option value="" disabled="" selected="">Elija una opcion (si corresponde)</option>
+                <option value="1">Alta</option>
+                <option value="2">Baja</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Fenómenos anormales</label>
+              <input type="text" name="fenomenosAnormales" id="fenomenosAnormales" />
+            </div>
+          </div>
+        </fieldset>
+
+      </div>
+    </form>
+  </div>
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="/__/firebase/6.2.0/firebase-app.js"></script>
+  <!-- Add Firebase products that you want to use -->
+  <script src="/__/firebase/6.2.0/firebase-database.js"></script>
+  <!-- Initialize Firebase -->
+  <script src="/__/firebase/init.js"></script>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+  <script src="vendor/jquery-validation/dist/additional-methods.min.js"></script>
+  <script src="vendor/jquery-steps/jquery.steps.min.js"></script>
+  <script src="vendor/minimalist-picker/dobpicker.js"></script>
+  <script src="vendor/nouislider/nouislider.min.js"></script>
+  <script src="vendor/wnumb/wNumb.js"></script>
+  <script src="js/main.js"></script>
+  <script type="text/javascript"></script>
+  <script src="/scripts/app.js"></script>
+  
+
+  <!-- Install script -->
+  <script src="/scripts/install.js"></script>
+  <script>
+  // Register service worker.
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((reg) => {
+            console.log('Service worker registered.', reg);
+          });
+      });
+    }
+  </script>
+  <div class="hiddendiv common"></div>
+</body>
+
+</html>
